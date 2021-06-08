@@ -18,19 +18,32 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(interfaces REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(std_msgs REQUIRED)
 
-add_executable(pid_ctrl src/pid_ctrl.cpp)
-ament_target_dependencies(pid_ctrl rclcpp interfaces)
-target_include_directories(pid_ctrl PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+add_library(${PROJECT_NAME} SHARED
+  src/${PROJECT_NAME}/PIDCtrl.cpp
+)
 
-install(TARGETS pid_ctrl
-  DESTINATION lib/${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME} 
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
+
+ament_target_dependencies(${PROJECT_NAME}
+  "rclcpp"
+  "std_msgs"
+)
+
+target_link_libraries(${PROJECT_NAME} dl)
+install(DIRECTORY include/ DESTINATION include)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+
+add_executable(motor1_pid src/motor1_pid.cpp)
+target_link_libraries(motor1_pid ${PROJECT_NAME})
+install(TARGETS motor1_pid DESTINATION lib/${PROJECT_NAME})
+
+add_executable(motor2_pid src/motor2_pid.cpp)
+target_link_libraries(motor2_pid ${PROJECT_NAME})
+install(TARGETS motor2_pid DESTINATION lib/${PROJECT_NAME})
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -42,5 +55,10 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(rclcpp)
+ament_export_dependencies(std_msgs)
 
 ament_package()
