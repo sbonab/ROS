@@ -7,7 +7,7 @@ The implementation of the controllers as well as the  set command generator is i
 ![alt text][image1]
 
 ---
-This [video](https://www.youtube.com/watch?v=vp9wAlj1cb8) shows the output of this workspace.
+This [video](https://youtu.be/J5EVPpEIH4w) shows the output of this workspace.
 
 ---
 ## Requirements
