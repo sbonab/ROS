@@ -1,6 +1,9 @@
+[image1]: ./doc/graph.png
+---
+
 # Controlling an FMU of a UGV in ROS2 with PID Controllers
 In this project, I run an FMU of a unmanned ground vehicle in ROS2. The UGV has a chassis model, tires, and an DC permanent magnet motor on either side. The motors are controlled by PID controllers. 
-[image1]: ./doc/graph.png
+
 ![alt text][image1]
 
 ---
